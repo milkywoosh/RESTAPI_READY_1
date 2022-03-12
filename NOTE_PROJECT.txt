@@ -1,0 +1,9 @@
+
+ - reference posgrest without sequelize !
+https://node-postgres.com/features/types
+
+reference project js NEED TO OPEN.
+ - challenge-binar-cp7
+ - learn_postgres
+ - https://github.com/rizqyhbb/industry-prep-server
+ - todo-backend 'rizqyhbb'
