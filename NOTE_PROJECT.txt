@@ -6,4 +6,9 @@ reference project js NEED TO OPEN.
  - challenge-binar-cp7
  - learn_postgres
  - https://github.com/rizqyhbb/industry-prep-server
- - todo-backend 'rizqyhbb'
+ - todo-backend 'rzqhbb'
+
+
+
+ CORS NOTE to remember:
+    - CORS -> Cross Origin Resource Sharing

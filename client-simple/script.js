@@ -1,14 +1,17 @@
-fetch("http://localhost:3333/api/data", {
-  method: 'GET'
-})
-  .then((res) => res.json())
-  .then((data) => console.log(data))
-  .catch((err) => console.log(err));
+const RootBtn = document.getElementById("getRoot");
+const DataBtn = document.getElementById("getData");
 
-fetch("http://localhost:3333/api/")
-  .then((res) => res.json())
-  .then((data) => console.log(data))
-  .catch((err) => console.log(err));
+RootBtn.addEventListener("click", () => {
+  fetch("http://localhost:3333/api")
+    .then((data) => data.json())
+    .then( data => console.log(data))
+    .catch((err) => console.log(err));
+});
+
+DataBtn.addEventListener("click", () => {
+  fetch("http://localhost:3333/api/data")
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err));
+});
 
 
-  

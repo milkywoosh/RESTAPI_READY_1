@@ -1,0 +1,13 @@
+- User
+    id_user serial PK
+    fname varchar
+    lname varchar
+    email varchar
+    password varchar
+
+
+- Task
+    id_task
+    doing varchar
+    created_at datetime
+
