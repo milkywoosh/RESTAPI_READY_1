@@ -10,5 +10,15 @@ reference project js NEED TO OPEN.
 
 
 
- CORS NOTE to remember:
+CORS NOTE to remember:
     - CORS -> Cross Origin Resource Sharing
+
+USER INTERFACE USING:
+   - go to `cd react_learn` followings
+   - branch `edit-3-useReducer`
+   - branch `edit-2-practice`
+   
+
+in /models/User.js: 
+    sequelize,
+    modelName: 'user', // --> used for user.findOne() , user.create() and so on

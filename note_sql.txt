@@ -1,0 +1,16 @@
+npx sequelize-cli model:generate --name User --attributes id_user:integer,fname:string,lname:string,email:string,password:string
+
+
+npx sequelize-cli model:generate --name task --attributes id_task:integer,id_user:integer,activity:string,completed:boolean
+
+sequelize db:create --> to enable this 
+--> "type": "commonjs" in package.json !!ß
+
+
+sequelize migration:create --name User_Definition
+
+https://medium.com/@emekadc/how-to-implement-one-to-one-one-to-many-and-many-to-many-relationships-when-designing-a-database-9da2de684710
+
+1 
+2
+3

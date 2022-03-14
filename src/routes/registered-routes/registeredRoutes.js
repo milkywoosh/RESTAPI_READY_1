@@ -14,4 +14,4 @@ const ROUTES = {
   TASK_BY_ID: `/task/${ROUTE_PARAMS.ID_TASK}`
 };
 
-export default ROUTES;
+module.exports = ROUTES;

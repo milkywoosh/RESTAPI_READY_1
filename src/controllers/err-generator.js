@@ -1,5 +1,5 @@
-import { ERRORS } from "../config/error-conditions";
 
+const ERRORS = require("../config/error-conditions")
 function ErrorCondition(err) {
   
   switch (err.message) {
