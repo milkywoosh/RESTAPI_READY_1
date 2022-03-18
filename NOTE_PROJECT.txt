@@ -24,3 +24,9 @@ in /models/User.js:
     modelName: 'user', // --> used for user.findOne() , user.create() and so on
 \
 why should use POOL -> https://stackoverflow.com/questions/48751505/how-can-i-choose-between-client-or-pool-for-node-postgres
+
+
+
+instead of using 'pg', try to use 'sequelize' raw query
+- sequelize raw query reference --> https://www.tabnine.com/code/javascript/functions/sequelize/QueryTypes/INSERT
+- https://sequelize.org/master/manual/raw-queries.html

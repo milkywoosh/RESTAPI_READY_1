@@ -8,4 +8,14 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-module.exports = pool;
+const { Sequelize, Op, Model, DataTypes } = require('@sequelize/core');
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_POSGRES_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'postgres',
+});
+
+module.exports = {
+  pool: pool,
+  sequelize: sequelize,
+};
+

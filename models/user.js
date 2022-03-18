@@ -42,16 +42,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     createdAt: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.DATE,
     },
     updatedAt: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.DATE,
     },
   }, {
     sequelize,
     modelName: 'user', // --> used for user.findOne() , user.create() and so on
+    freezeTableName: true,
+    underscored: true,
   });
   return User;
 };
