@@ -104,7 +104,6 @@ class UserController {
   static getAllEmails = async (req, res) => {
     try {
       const data = await sequelize.query("SELECT email from users");
-      console.log(data)
       return res.json({status: 200, data: data[0]})
     } catch (err) {
       return res.json({ status: 400, message: err });
