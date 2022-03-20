@@ -1,6 +1,6 @@
 
 const RootBtn = document.getElementById("getRoot");
-const DataBtn = document.getElementById("getData");
+const GetAllEmail = document.getElementById("getData");
 const InsertBtn = document.getElementById("btn");
 const InputValue = document.getElementById("getvalue");
 
@@ -30,8 +30,9 @@ RootBtn.addEventListener("click", () => {
     .catch((err) => console.log(err));
 });
 
-DataBtn.addEventListener("click", () => {
-  fetch("http://localhost:3333/api/data")
+GetAllEmail.addEventListener("click", () => {
+  fetch("http://localhost:3333/api/email")
+    .then((data) => data.json())
     .then((data) => console.log(data))
     .catch((err) => console.log(err));
 });
