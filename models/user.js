@@ -54,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'user', // --> used for user.findOne() , user.create() and so on
     freezeTableName: true,
     underscored: true,
+    timestamps: false,
   });
   return User;
 };

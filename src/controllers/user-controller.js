@@ -21,31 +21,42 @@ class UserController {
           type: QueryTypes.SELECT,
         }
       );
-
-      console.log(isEmailExist.length);
-
-      /* use sequelize here cd
-      const checkIfEmailAlreadyStored = await user.findOne({
-        where: { email },
-      });
-      */
-
+      console.log(isEmailExist);
+      // return res.status(200).json({
+      //   message: isEmailExist,
+      // });
       if (isEmailExist.length != 0) {
         return res.status(200).json({
           message: " this email is already  exist please use another one",
         });
       }
-      return res.status(200).json({
-        message: " okay",
-      });
       const hashedPassword = await encryption.generateHashedPassword(password);
 
       // create using QUERY HERE !
       // const now = new Date();
-      // const createNewUser = await pool.query(
-      //   "INSERT INTO users(id_user, email, password,fname,lname) VALUES($1, $2, $3, $4, $5)",
-      //   [uuidv4(), email, hashedPassword, fname, lname]
-      // );
+
+      try {
+        const createNewUser = await sequelize.query(
+          "INSERT INTO users(id_user, email, password,fname,lname) VALUES(?,?,?,?,?)",
+          {
+            replacements: [uuidv4(), email, hashedPassword, fname, lname],
+            type: QueryTypes.INSERT,
+          }
+        );
+        const isEmailExist = await sequelize.query(
+          "SELECT * FROM users WHERE email = ?",
+          {
+            replacements: [email],
+            type: QueryTypes.SELECT,
+          }
+        );
+        console.log(isEmailExist);
+        return res
+          .status(200)
+          .json({ message: "success", data: createNewUser });
+      } catch (err) {
+        console.log(err);
+      }
 
       // use sequelize here !
       /*
@@ -56,8 +67,6 @@ class UserController {
         lname,
       });
       */
-
-      return res.status(200).json({ message: "success", data: createNewUser });
     } else {
       return res
         .status(400)
@@ -65,9 +74,42 @@ class UserController {
     }
   };
 
-  //   static login = async (req, res) => {};
+  static fetchCertainConditions = async (req, res) => {
+    const { emails } = req.body;
+    let arr_input = emails.split("\n");
+    /*
+    emails: {
+      mark_robot@gmail.com
+      brown_nies@gmail.com
+      john_wick@gmail.com
+      */
+    arr_input = arr_input.map((data) => {
+      return data.replace(/ /g, "");
+    });
+    console.log(arr_input);
+    try {
+      const fetch = await sequelize.query(
+        "SELECT email from users WHERE email IN(:data)",
+        {
+          type: QueryTypes.SELECT,
+          replacements: { data: [...arr_input] }, // ["mark_robot@gmail.com","john_wick@gmail.com","brown_nies@gmail.com"]
+        }
+      );
+      return res.json({ status: 200, message: fetch });
+    } catch (err) {
+      return res.json({ status: 400, message: err });
+    }
+  };
 
-  //   static throwError = (err) => {};
+  static getAllEmails = async (req, res) => {
+    try {
+      const data = await sequelize.query("SELECT email from users");
+      console.log(data)
+      return res.json({status: 200, data: data[0]})
+    } catch (err) {
+      return res.json({ status: 400, message: err });
+    }
+  };
 }
 
 module.exports = UserController;

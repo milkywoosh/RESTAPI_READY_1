@@ -35,14 +35,17 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
+      defaultValue: sequelize.fn('NOW'),
     },
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
+      defaultValue: sequelize.fn('NOW'),
     },
   }, {
     sequelize,
     modelName: 'task',
+    timestamps: false,
   });
   return task;
 };

@@ -15,6 +15,9 @@ router.get(ROUTES.ROOT, (req, res) => {
 });
 
 router.get(ROUTES.GET_DATA, simpleDoing.simpleDoing);
+router.post(ROUTES.FETCH_MULTIPLE_EMAILS, UserController.fetchCertainConditions)
+router.get(ROUTES.ALL_EMAIL, UserController.getAllEmails);
+
 
 router.post(ROUTES.REGISTER, UserController.register);
 
