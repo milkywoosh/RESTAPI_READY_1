@@ -5,6 +5,7 @@ const encryption = require("../../utils/encryption");
 const { QueryTypes } = require("@sequelize/core");
 const { pool, sequelize } = require("../../utils/db_connect");
 const { v4: uuidv4 } = require("uuid");
+const { search } = require("../routes");
 
 class UserController {
   static register = async (req, res) => {
@@ -74,8 +75,16 @@ class UserController {
     }
   };
 
+
+
+  /*
+  mark_robot@gmail.com
+  john_wick@gmail.com
+  brown_nies@gmail.com
+  rock_lee@gmail.com
+  */
   static fetchCertainConditions = async (req, res) => {
-    const { emails } = req.body;
+    const { emails } = req.body; // get this value input from postman or web input form
     let arr_input = emails.split("\n");
     /*
     emails: {
@@ -109,6 +118,22 @@ class UserController {
       return res.json({ status: 400, message: err });
     }
   };
+
+  static getDataByParams = async (req, res) => {
+    const fname = req.params.username;
+    try {
+      const fetch = await sequelize.query(
+        "SELECT email FROM users WHERE fname LIKE :search_name ",
+        {
+          type: QueryTypes.SELECT,
+          replacements: {search_name: fname}
+        }
+      )
+      return res.json({status: 200, message: fetch})
+    } catch (error) {
+      return res.json({status: 400, message: error.message})
+    }
+  }
 }
 
 module.exports = UserController;

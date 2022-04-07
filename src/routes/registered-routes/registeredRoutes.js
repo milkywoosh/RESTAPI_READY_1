@@ -14,6 +14,7 @@ const ROUTES = {
   ALL_TASK: '/task',
   TASK_BY_ID: `/task/${ROUTE_PARAMS.ID_TASK}`,
   FETCH_MULTIPLE_EMAILS: '/many_emails',
+  DATA_BY_PARAMS: "/user/:username",
 };
 
 module.exports = ROUTES;

@@ -2,7 +2,6 @@
 const RootBtn = document.getElementById("getRoot");
 const GetAllEmail = document.getElementById("getData");
 const InsertBtn = document.getElementById("btn");
-const InputValue = document.getElementById("getvalue");
 
 async function InsertValueTxtArea(event)  {
   event.preventDefault();
@@ -36,3 +35,7 @@ GetAllEmail.addEventListener("click", () => {
     .then((data) => console.log(data))
     .catch((err) => console.log(err));
 });
+
+
+byFirstName
+
