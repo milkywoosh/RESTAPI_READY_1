@@ -6,6 +6,7 @@ const { QueryTypes } = require("@sequelize/core");
 const { pool, sequelize } = require("../../utils/db_connect");
 const { v4: uuidv4 } = require("uuid");
 const { search } = require("../routes");
+const { async } = require("regenerator-runtime");
 
 class UserController {
   static register = async (req, res) => {
@@ -134,6 +135,28 @@ class UserController {
       return res.json({status: 400, message: error.message})
     }
   }
+
+  static getDataByEmail = async (req, res) => {
+    const emailParam = req.params.email_user; // get email_user from route url
+    try {
+      const fetch = await sequelize.query(
+        "SELECT * FROM users WHERE email = ?",
+        {
+          replacements: [emailParam],
+          type: QueryTypes.SELECT
+        }
+      )
+      if (fetch.length === 0) {
+        return res.json({status: 404, message: "your email is not found ! please kindly recheck your email"})
+      }
+      return res.json({status: 400, message: fetch})
+
+    } catch (error) {
+      return res.json({status: 404, message: error})
+    }
+
+  }
+
 }
 
 module.exports = UserController;
