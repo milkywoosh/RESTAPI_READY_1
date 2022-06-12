@@ -16,6 +16,8 @@ const ROUTES = {
   FETCH_MULTIPLE_EMAILS: '/many_emails',
   DATA_BY_PARAMS: "/user/:username",
   DATA_BY_MAIL_USER: "/email/:email_user",
+  DATA_BY_CERTAIN_NAME : "/any_name",
+  AUTH_TEST: "/authenticate"
 };
 
 module.exports = ROUTES;

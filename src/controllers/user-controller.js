@@ -7,6 +7,7 @@ const { pool, sequelize } = require("../../utils/db_connect");
 const { v4: uuidv4 } = require("uuid");
 const { search } = require("../routes");
 const { async } = require("regenerator-runtime");
+const jwt = require("jsonwebtoken");
 
 class UserController {
   static register = async (req, res) => {
@@ -82,7 +83,7 @@ class UserController {
   brown_nies@gmail.com
   rock_lee@gmail.com
   */
-//  get many data by many emails
+  //  get many data by many emails
   static getManyByMails = async (req, res) => {
     const { emails } = req.body; // get this value input from postman or web input form
     let arr_input = emails.split("\n");
@@ -120,15 +121,27 @@ class UserController {
   };
 
   static getDataByParams = async (req, res) => {
-    const fname = req.params.username;
+    const certain_name = req.params.username;
+
     try {
       const fetch = await sequelize.query(
         "SELECT email FROM users WHERE fname LIKE :search_name ",
         {
           type: QueryTypes.SELECT,
-          replacements: { search_name: fname },
+          replacements: { search_name: certain_name },
         }
       );
+      console.log(fetch);
+      if (fetch.length == 0) {
+        const fetch1 = await sequelize.query(
+          "SELECT email FROM users WHERE lname LIKE :search_name ",
+          {
+            type: QueryTypes.SELECT,
+            replacements: { search_name: certain_name },
+          }
+        );
+        return res.json({ status: 200, message: fetch1 });
+      }
       return res.json({ status: 200, message: fetch });
     } catch (error) {
       return res.json({ status: 400, message: error.message });
@@ -146,7 +159,7 @@ class UserController {
           type: QueryTypes.SELECT,
         }
       );
-      console.log(fetch)
+      console.log(fetch);
       if (fetch.length === 0) {
         return res.json({
           status: 404,
@@ -161,28 +174,93 @@ class UserController {
 
   static loginUser = async (req, res) => {
     const { email, password } = req.body;
-    
+
     try {
-      const hashedPassword  = await sequelize.query(
-        "SELECT password FROM users WHERE email = ?",
+      const data_user = await sequelize.query(
+        "SELECT * FROM users WHERE email = ?",
         {
           replacements: [email],
-          type:  QueryTypes.SELECT,
+          type: QueryTypes.SELECT,
         }
-      )
-      // console.log(hashedPassword[0].password)
-      const strPassword = hashedPassword[0].password 
-      const isPasswordTrue = encryption.compareHash(password, strPassword)
-      if (isPasswordTrue === false) {
-        return res.json({status: 200, message: "your password is wrong, please try again"})
-      } else {
-        return res.json({status: 200, message: "okay the password is accepted"})
+      );
+      // console.log(data_user);
+      /*
+       [{
+          id_user: 
+          fname: 
+          lname: 
+          email: 
+          password: 
+          createdAt: 
+          updatedAt: 
+        }]
+      */
+      const payload_data = data_user[0];
+      const hashedPassword = data_user[0].password;
+      const isPasswordTrue = await encryption.compareHash(password, hashedPassword);
+      console.log(isPasswordTrue)
+      if (isPasswordTrue == false) {
+        // throw new Error("password is wrong");
+        return res.json({message: "password is wrong"})
       }
-    
-    } catch (err) {
-      return res.json({status: 400, message: "errrr"})
-    }
 
+      const token = jwt.sign(
+        {
+          id_user: payload_data.id_user,
+          email: payload_data.email,
+          fname: payload_data.fname,
+        },
+        process.env.SECRET_KEY
+      );
+
+      const decode = jwt.verify(
+        token,
+        process.env.SECRET_KEY,
+        (err, decode) => {
+          try {
+            if (err) {
+              return res.status(403).json({ message: "FORBIDDEN" });
+            }
+            return decode;
+          } catch (err) {
+            return res.json({message: "error"})
+          }
+        }
+      );
+      return res.status(200).json({ message: { token, decode }});
+
+
+    } catch (err) {
+      return res.json({ status: 400, message: "err" });
+    }
+  };
+
+  static checkByCertainName = async (req, res) => {
+    const { certain_name } = req.body;
+
+    try {
+      const fetch = await sequelize.query(
+        "SELECT email FROM users WHERE fname LIKE :search_name ",
+        {
+          type: QueryTypes.SELECT,
+          replacements: { search_name: certain_name },
+        }
+      );
+      console.log(fetch);
+      if (fetch.length == 0) {
+        const fetch1 = await sequelize.query(
+          "SELECT email FROM users WHERE lname LIKE :search_name ",
+          {
+            type: QueryTypes.SELECT,
+            replacements: { search_name: certain_name },
+          }
+        );
+        return res.json({ status: 200, message: fetch1 });
+      }
+      return res.json({ status: 200, message: fetch });
+    } catch (error) {
+      return res.json({ status: 400, message: error.message });
+    }
   };
 }
 

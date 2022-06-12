@@ -11,6 +11,8 @@ app.use(
     methods: ["GET", "POST"],
   })
 );
+// app.use(cors())
+
 
 dotenv.config();
 app.use(express.json());
