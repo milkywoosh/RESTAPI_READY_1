@@ -76,8 +76,6 @@ class UserController {
     }
   };
 
-
-
   /*
   mark_robot@gmail.com
   john_wick@gmail.com
@@ -114,7 +112,7 @@ class UserController {
   static getAllEmails = async (req, res) => {
     try {
       const data = await sequelize.query("SELECT email from users");
-      return res.json({status: 200, data: data[0]})
+      return res.json({ status: 200, data: data[0] });
     } catch (err) {
       return res.json({ status: 400, message: err });
     }
@@ -127,36 +125,64 @@ class UserController {
         "SELECT email FROM users WHERE fname LIKE :search_name ",
         {
           type: QueryTypes.SELECT,
-          replacements: {search_name: fname}
+          replacements: { search_name: fname },
         }
-      )
-      return res.json({status: 200, message: fetch})
+      );
+      return res.json({ status: 200, message: fetch });
     } catch (error) {
-      return res.json({status: 400, message: error.message})
+      return res.json({ status: 400, message: error.message });
     }
-  }
+  };
 
   static getDataByEmail = async (req, res) => {
+    // need to use prepare statement, to prevent DANGER sql injection
     const emailParam = req.params.email_user; // get email_user from route url
     try {
       const fetch = await sequelize.query(
         "SELECT * FROM users WHERE email = ?",
         {
           replacements: [emailParam],
-          type: QueryTypes.SELECT
+          type: QueryTypes.SELECT,
+        }
+      );
+      console.log(fetch)
+      if (fetch.length === 0) {
+        return res.json({
+          status: 404,
+          message: "your email is not found ! please kindly recheck your email",
+        });
+      }
+      return res.json({ status: 400, message: fetch });
+    } catch (error) {
+      return res.json({ status: 404, message: error });
+    }
+  };
+
+  static loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+      const hashedPassword  = await sequelize.query(
+        "SELECT password FROM users WHERE email = ?",
+        {
+          replacements: [email],
+          type:  QueryTypes.SELECT,
         }
       )
-      if (fetch.length === 0) {
-        return res.json({status: 404, message: "your email is not found ! please kindly recheck your email"})
+      // console.log(hashedPassword[0].password)
+      const strPassword = hashedPassword[0].password 
+      const isPasswordTrue = encryption.compareHash(password, strPassword)
+      if (isPasswordTrue === false) {
+        return res.json({status: 200, message: "your password is wrong, please try again"})
+      } else {
+        return res.json({status: 200, message: "okay the password is accepted"})
       }
-      return res.json({status: 400, message: fetch})
-
-    } catch (error) {
-      return res.json({status: 404, message: error})
+    
+    } catch (err) {
+      return res.json({status: 400, message: "errrr"})
     }
 
-  }
-
+  };
 }
 
 module.exports = UserController;

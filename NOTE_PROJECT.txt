@@ -23,7 +23,7 @@ in /models/User.js:
     sequelize,
     modelName: 'user', // --> used for user.findOne() , user.create() and so on
 \
-why should use POOL -> https://stackoverflow.com/questions/48751505/how-can-i-choose-between-client-or-pool-for-node-postgres
+why should use POOL?? -> https://stackoverflow.com/questions/48751505/how-can-i-choose-between-client-or-pool-for-node-postgres
 
 
 
