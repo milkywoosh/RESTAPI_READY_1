@@ -82,7 +82,8 @@ class UserController {
   brown_nies@gmail.com
   rock_lee@gmail.com
   */
-  static fetchCertainConditions = async (req, res) => {
+//  get many data by many emails
+  static getManyByMails = async (req, res) => {
     const { emails } = req.body; // get this value input from postman or web input form
     let arr_input = emails.split("\n");
     /*
@@ -97,7 +98,7 @@ class UserController {
     console.log(arr_input);
     try {
       const fetch = await sequelize.query(
-        "SELECT email from users WHERE email IN(:data)",
+        "SELECT id_user, email from users WHERE email IN(:data)",
         {
           type: QueryTypes.SELECT,
           replacements: { data: [...arr_input] }, // ["mark_robot@gmail.com","john_wick@gmail.com","brown_nies@gmail.com"]
