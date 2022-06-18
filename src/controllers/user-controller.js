@@ -248,7 +248,17 @@ class UserController {
         }
       );
       console.log(fetch);
-      
+      if (fetch.length == 0) {
+        // look up from last name?
+        const fetch1 = await sequelize.query(
+          "SELECT email FROM users WHERE lname LIKE :search_name ",
+          {
+            type: QueryTypes.SELECT,
+            replacements: { search_name: certain_name },
+          }
+        );
+        return res.json({ status: 200, message: fetch1 });
+      }
       return res.json({ status: 200, message: fetch });
     } catch (error) {
       return res.json({ status: 400, message: error.message });

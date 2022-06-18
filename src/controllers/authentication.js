@@ -1,4 +1,0 @@
-
-const authentication = (req, res) => {
-
-}

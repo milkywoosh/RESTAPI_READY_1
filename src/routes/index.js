@@ -7,9 +7,9 @@ const passport = require("passport-jwt")
 
 
 const simpleDoing = require("../controllers/naive-task")
-// import { simpleDoing } from "../controllers/naive-task.js";
 const UserController = require("../controllers/user-controller");
-// import  UserController  from "../controllers/user-controller.js";
+const restrict = require("../../lib/restrict");
+const _whoami = require("../controllers/whoami")
 
 router.get(ROUTES.ROOT, (req, res) => {
   console.log("you are in root");
@@ -20,6 +20,7 @@ router.get(ROUTES.ROOT, (req, res) => {
 router.post(ROUTES.REGISTER, UserController.register);
 router.post(ROUTES.LOG_IN, UserController.loginUser);
 
+router.get(ROUTES.RESTRICTION, restrict, _whoami )
 router.get(ROUTES.GET_DATA, simpleDoing.simpleDoing);
 router.post(ROUTES.FETCH_MULTIPLE_EMAILS, UserController.getManyByMails);
 router.get(ROUTES.ALL_EMAIL, UserController.getAllEmails);
