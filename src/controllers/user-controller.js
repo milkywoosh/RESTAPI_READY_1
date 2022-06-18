@@ -239,24 +239,16 @@ class UserController {
     const { certain_name } = req.body;
 
     try {
+      // look up from first_name and last_name?
       const fetch = await sequelize.query(
-        "SELECT email FROM users WHERE fname LIKE :search_name ",
+        "SELECT email FROM users WHERE fname LIKE :search_name or lname LIKE :search_name",
         {
           type: QueryTypes.SELECT,
-          replacements: { search_name: certain_name },
+          replacements: { search_name: `%${certain_name}%` },
         }
       );
       console.log(fetch);
-      if (fetch.length == 0) {
-        const fetch1 = await sequelize.query(
-          "SELECT email FROM users WHERE lname LIKE :search_name ",
-          {
-            type: QueryTypes.SELECT,
-            replacements: { search_name: certain_name },
-          }
-        );
-        return res.json({ status: 200, message: fetch1 });
-      }
+      
       return res.json({ status: 200, message: fetch });
     } catch (error) {
       return res.json({ status: 400, message: error.message });

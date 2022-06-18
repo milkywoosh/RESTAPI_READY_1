@@ -17,7 +17,8 @@ const ROUTES = {
   DATA_BY_PARAMS: "/user/:username",
   DATA_BY_MAIL_USER: "/email/:email_user",
   DATA_BY_CERTAIN_NAME : "/any_name",
-  AUTH_TEST: "/authenticate"
+  AUTH_TEST: "/authenticate",
+  RESTRICTION :"/v1/auth/whoami"
 };
 
 module.exports = ROUTES;

@@ -3,7 +3,6 @@ const cors = require("cors");
 const routes = require("./src/routes/index.js");
 const dotenv = require("dotenv");
 
-
 const app = express();
 app.use(
   cors({
@@ -16,6 +15,7 @@ app.use(
 
 dotenv.config();
 app.use(express.json());
+
 
 // all routes below;
 app.use("/api", routes);

@@ -2,9 +2,9 @@
 const express = require("express")
 const router = express.Router();
 const ROUTES = require("./registered-routes/registeredRoutes")
-const authentication = require("../../auth_middleware/authentication")
+const passport = require("passport-jwt")
 // import ROUTES from "./registered-routes/registeredRoutes.js";
-const authorization = require("../../auth_middleware/authorization")
+
 
 const simpleDoing = require("../controllers/naive-task")
 // import { simpleDoing } from "../controllers/naive-task.js";
@@ -19,9 +19,8 @@ router.get(ROUTES.ROOT, (req, res) => {
 
 router.post(ROUTES.REGISTER, UserController.register);
 router.post(ROUTES.LOG_IN, UserController.loginUser);
-router.use(authentication);
 
-router.get(ROUTES.GET_DATA,[authorization], simpleDoing.simpleDoing);
+router.get(ROUTES.GET_DATA, simpleDoing.simpleDoing);
 router.post(ROUTES.FETCH_MULTIPLE_EMAILS, UserController.getManyByMails);
 router.get(ROUTES.ALL_EMAIL, UserController.getAllEmails);
 router.get(ROUTES.DATA_BY_PARAMS, UserController.getDataByParams);
